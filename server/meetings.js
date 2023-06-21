@@ -1,5 +1,5 @@
-const express = require('express');
-const meetings = express(); 
+const meetings = require('express').Router();
+
 const { createMeeting,
     getAllFromDatabase,
     addToDatabase,
@@ -10,23 +10,13 @@ meetings.get('/', (req, res, next) => {
 });
 
 meetings.post('/', (req, res, next) => {
-    const newMeeting = addToDatabase('meetings', createMeeting());
-    if (newMeeting) {
-        res.status(201);
-    } else {
-        req.status(404);
-    }
-    res.send();
+    let newMeeting = addToDatabase('meetings', createMeeting());
+    res.status(201).send(newMeeting);
 });
 
 meetings.delete('/', (req, res, next) => {
-    const deleteMeeting = deleteAllFromDatabase('meetings');
-    if (deleteMeeting) {
-        res.status(204);
-    } else {
-        res.status(500);
-    }
-    res.send();
+    deleteAllFromDatabase('meetings');
+    res.status(204).send();
 });
 
 module.exports = meetings;

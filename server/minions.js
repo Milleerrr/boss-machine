@@ -1,5 +1,5 @@
-const express = require('express');
-const minions = express();
+const minions = require('express').Router();
+
 const { getAllFromDatabase,
     getFromDatabaseById,
     addToDatabase,
@@ -9,7 +9,7 @@ const { getAllFromDatabase,
 minions.param('minionId', (req, res, next, id) => {
     const minion = getFromDatabaseById('minions', id);
     if (minion) {
-        req.body = minion;
+        req.minion = minion;
         next();
     } else {
         res.status(404).send();
@@ -17,7 +17,7 @@ minions.param('minionId', (req, res, next, id) => {
 });
 
 minions.get('/', (req, res, next) => {
-    res.send(getAllFromDatabase('mininos'));
+    res.send(getAllFromDatabase('minions'));
 });
 
 minions.post('/', (req, res, next) => {
@@ -31,7 +31,7 @@ minions.get('/:minionId', (req, res, next) => {
 
 minions.put('/:minionId', (req, res, next) => {
     const updateMinion = updateInstanceInDatabase('minions', req.body);
-    res.status(201).send(updateMinion);
+    res.send(updateMinion);
 });
 
 minions.delete('/:minionId', (req, res, next) => {
