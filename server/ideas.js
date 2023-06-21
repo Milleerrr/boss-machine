@@ -21,7 +21,7 @@ ideas.get('/', (req, res, next) => {
     res.send(getAllFromDatabase('ideas'));
 });
 
-ideas.post('/', (req, res, next) => {
+ideas.post('/', checkMillionDollarIdea, (req, res, next) => {
     const newIdea = addToDatabase('ideas', req.body)
     res.status(201).send(newIdea);
 });
@@ -30,7 +30,7 @@ ideas.get('/:ideaId', (req, res, next) => {
     res.status(200).send(req.idea);
 });
 
-ideas.put('/:ideaId', (req, res, next) => {
+ideas.put('/:ideaId', checkMillionDollarIdea, (req, res, next) => {
     const updateIdea = updateInstanceInDatabase('idea', req.body);
     res.status(201).send(updateIdea);
 });
