@@ -1,20 +1,32 @@
 const express = require('express');
 const meetings = express(); 
-const {  createMeeting,
+const { createMeeting,
     getAllFromDatabase,
     addToDatabase,
     deleteAllFromDatabase } = require('./db');
 
-meetings.get('api/meetings', (req, res, next) => {
-    res.send(getAllFromDatabase(req.params));
+meetings.get('/', (req, res, next) => {
+    res.send(getAllFromDatabase('meetings'));
 });
 
-meetings.post('api/meetings', (req, res, next) => {
-
+meetings.post('/', (req, res, next) => {
+    const newMeeting = addToDatabase('meetings', createMeeting());
+    if (newMeeting) {
+        res.status(201);
+    } else {
+        req.status(404);
+    }
+    res.send();
 });
 
-meetings.delete('api/meetings/:minionId', (req, res, next) => {
-
+meetings.delete('/', (req, res, next) => {
+    const deleteMeeting = deleteAllFromDatabase('meetings');
+    if (deleteMeeting) {
+        res.status(204);
+    } else {
+        res.status(500);
+    }
+    res.send();
 });
 
 module.exports = meetings;
