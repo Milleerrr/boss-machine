@@ -4,8 +4,7 @@ const { getAllFromDatabase,
     getFromDatabaseById,
     addToDatabase,
     updateInstanceInDatabase,
-    deleteFromDatabasebyId,
-    deleteAllFromDatabase } = require('./db');
+    deleteFromDatabasebyId } = require('./db');
 
 ideas.get('api/ideas', (req, res, next) => {
     res.send(getAllFromDatabase(req.params));

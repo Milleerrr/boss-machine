@@ -1,30 +1,30 @@
 const express = require('express');
-const minions = express(); 
+const minions = express();
 const { getAllFromDatabase,
     getFromDatabaseById,
     addToDatabase,
     updateInstanceInDatabase,
-    deleteFromDatabasebyId,
-    deleteAllFromDatabase } = require('./db');
+    deleteFromDatabasebyId } = require('./db');
 
-minions.get('api/minions', (req, res, next) => {
-    res.send(getAllFromDatabase(req.params));
+minions.get('/', (req, res, next) => {
+    res.send(getAllFromDatabase('mininos'));
 });
 
-minions.post('api/minions', (req, res, next) => {
-
+minions.post('/', (req, res, next) => {
+    const newMinion = addToDatabase('minions', req.body);
+    res.status(201).send(newMinion);
 });
 
-minions.get('api/minions/:minionId', (req, res, next) => {
-
+minions.get('/:minionId', (req, res, next) => {
+    // Use getFromDatabaseById 
 });
 
-minions.put('api/minions/:minionId', (req, res, next) => {
-
+minions.put('/:minionId', (req, res, next) => {
+    // Use getFromDatabaseById, updateInstacneInDatabase
 });
 
-minions.delete('api/minions/:minionId', (req, res, next) => {
-
+minions.delete('/:minionId', (req, res, next) => {
+    // Use deleteFromDatabaseById
 });
 
 module.exports = minions;
