@@ -1,29 +1,48 @@
 const express = require('express');
-const ideas = express(); 
+const ideas = express();
 const { getAllFromDatabase,
     getFromDatabaseById,
     addToDatabase,
     updateInstanceInDatabase,
     deleteFromDatabasebyId } = require('./db');
+const checkMillionDollarIdea = require('./checkMillionDollarIdea');
 
-ideas.get('api/ideas', (req, res, next) => {
-    res.send(getAllFromDatabase(req.params));
+ideas.param('ideaId', (req, res, next, id) => {
+    const idea = getFromDatabaseById('ideas', id);
+    if (idea) {
+        req.body = idea;
+        next();
+    } else {
+        res.status(404).send();
+    }
 });
 
-ideas.post('api/ideas', (req, res, next) => {
-
+ideas.get('/', (req, res, next) => {
+    res.send(getAllFromDatabase('ideas'));
 });
 
-ideas.get('api/ideas/:minionId', (req, res, next) => {
-
+ideas.post('/', (req, res, next) => {
+    const newIdea = addToDatabase('ideas', req.body)
+    res.status(201).send(newIdea);
 });
 
-ideas.put('api/ideas/:minionId', (req, res, next) => {
-
+ideas.get('/:ideaId', (req, res, next) => {
+    res.status(200).send(req.idea);
 });
 
-ideas.delete('api/ideas/:minionId', (req, res, next) => {
+ideas.put('/:ideaId', (req, res, next) => {
+    const updateIdea = updateInstanceInDatabase('idea', req.body);
+    res.status(201).send(updateIdea);
+});
 
+ideas.delete('/:ideaId', (req, res, next) => {
+    const deleteIdea = deleteFromDatabasebyId('idea', req.params.ideaId); 
+    if (deleteIdea) {
+        req.status(204);
+    } else {
+        res.status(500);
+    }
+    res.send();
 });
 
 module.exports = ideas;
